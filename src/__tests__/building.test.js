@@ -53,7 +53,7 @@ describe('Building', () => {
         expect(building.floor(thirdFloor).downPressed).toBeTruthy();
     });
 
-    test('moves elevator', () => {
+    test('sends elevator when press button on the floor', () => {
         building.pressDown(thirdFloor);
 
         expect(elevator_1.goTo).toHaveBeenCalledWith(thirdFloor);
