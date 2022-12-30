@@ -53,9 +53,11 @@ describe('Building', () => {
         expect(building.floor(thirdFloor).downPressed).toBeTruthy();
     });
 
-    test('sends elevator when press button on the floor', () => {
-        building.pressDown(thirdFloor);
+    describe('sends elevator when press button on the floor', () => {
+        test('if all elevators are on the same floor', () => {
+            building.pressDown(thirdFloor);
 
-        expect(elevator_1.goTo).toHaveBeenCalledWith(thirdFloor);
+            expect(elevator_1.goTo).toHaveBeenCalledWith(thirdFloor);
+        });
     });
 });
