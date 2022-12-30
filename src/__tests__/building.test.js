@@ -23,8 +23,8 @@ describe('Building', () => {
     describe('constructor', () => {
         test('initializes elevators', () => {
             expect(building.elevators).toHaveLength(2);
-            // expect(typeof building.elevators[0]).toBe(Elevator);
-            // expect(building.elevators[1]).toBeInstanceOf(Elevator);
+            expect(building.elevators[0]).toBeInstanceOf(Elevator);
+            expect(building.elevators[1]).toBeInstanceOf(Elevator);
         });
 
         test('initializes min & max floor', () => {
