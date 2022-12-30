@@ -1,8 +1,8 @@
-import {Elevator} from '../elevator';
+import Elevator from '../elevator';
 
 describe('elevator', () => {
     const initialPosition = 1;
-    const nextPosition = 3; // Given
+    const destination = 3; // Given
 
     let elevator;
     beforeEach(() => {
@@ -15,24 +15,24 @@ describe('elevator', () => {
         expect(elevator.currentPosition).toEqual(initialPosition); // Then
     });
 
-    describe('move', () => {
-        test('moves up', () => {
-            elevator.move(nextPosition); // When
+    describe('goTo', () => {
+        test('upward', () => {
+            elevator.goTo(destination); // When
 
             expect(elevator.isGoingUp()).toBeTruthy(); // Then
         });
 
-        test('moves down', () => {
+        test('downward', () => {
             elevator = new Elevator(10); // Given
 
-            elevator.move(nextPosition); // When
+            elevator.goTo(destination); // When
 
             expect(elevator.isGoingUp()).toBeFalsy(); // Then
             expect(elevator.isGoingDown()).toBeTruthy(); // Then
         });
 
         test('stays', () => {
-            elevator.move(initialPosition); // When
+            elevator.goTo(initialPosition); // When
 
             expect(elevator.isGoingUp()).toBeFalsy(); // Then
             expect(elevator.isGoingDown()).toBeFalsy(); // Then

@@ -1,18 +1,18 @@
-export class Elevator {
+export default class Elevator {
     constructor(position) {
         this.currentPosition = position;
     }
 
-    move(nextPosition) {
-        this.nextPosition = nextPosition;
+    goTo(destination) {
+        this.destination = destination;
     }
 
     isGoingUp() {
-        return this.currentPosition < this.nextPosition;
+        return this.currentPosition < this.destination;
     }
 
     isGoingDown() {
-        return this.currentPosition > this.nextPosition;
+        return this.currentPosition > this.destination;
     }
 
     changeCurrentPosition(position) {
