@@ -1,53 +1,69 @@
 import Elevator from '../elevator';
 
+const secondFloor = 2;
 describe('elevator', () => {
-    const initialPosition = 1;
-    const destination = 3; // Given
+    const firstFloor = 1;
+    const thirdFloor = 3;
+    const tenthFloor = 10;
 
     let elevator;
     beforeEach(() => {
-        elevator = new Elevator(initialPosition);
+        elevator = new Elevator(firstFloor);
     });
 
-    test('sets initial position', () => {
-        const elevator = new Elevator(initialPosition); // When
+    test('sets initial position & destinations', () => {
+        const elevator = new Elevator(firstFloor); // When
 
-        expect(elevator.currentPosition).toEqual(initialPosition); // Then
+        expect(elevator.currentFloor).toEqual(firstFloor); // Then
+        expect(elevator.destinations).toHaveLength(0); // Then
     });
 
-    describe('goTo', () => {
-        test('upward', () => {
-            elevator.goTo(destination); // When
+    describe('mustGoTo', () => {
+        test('adds destination', () => {
+            elevator.mustGoTo(thirdFloor);
 
-            expect(elevator.isGoingUp()).toBeTruthy(); // Then
+            expect(elevator.destinations).toHaveLength(1);
         });
 
-        test('downward', () => {
-            elevator = new Elevator(10); // Given
+        test('adds multiple sorted destinations upward', () => {
+            elevator.mustGoTo(tenthFloor);
+            elevator.mustGoTo(thirdFloor);
 
-            elevator.goTo(destination); // When
-
-            expect(elevator.isGoingUp()).toBeFalsy(); // Then
-            expect(elevator.isGoingDown()).toBeTruthy(); // Then
+            expect(elevator.destinations).toHaveLength(2);
+            expect(elevator.destinations[0]).toBe(thirdFloor);
+            expect(elevator.destinations[1]).toBe(tenthFloor);
         });
 
-        test('stays', () => {
-            elevator.goTo(initialPosition); // When
+        test('adds multiple sorted destinations downward', () => {
+            elevator = new Elevator(tenthFloor);
 
-            expect(elevator.isGoingUp()).toBeFalsy(); // Then
-            expect(elevator.isGoingDown()).toBeFalsy(); // Then
+            elevator.mustGoTo(firstFloor);
+            elevator.mustGoTo(thirdFloor);
+
+            expect(elevator.destinations).toHaveLength(2);
+            expect(elevator.destinations[0]).toBe(thirdFloor);
+            expect(elevator.destinations[1]).toBe(firstFloor);
+        });
+
+        test('NOT add destination if direction is opposite', () => {
+            elevator = new Elevator(thirdFloor); // When
+            elevator.mustGoTo(tenthFloor);
+
+            elevator.mustGoTo(secondFloor);
+
+            expect(elevator.destinations).toHaveLength(1);
         });
     });
 
-    describe('changeCurrentPosition', () => {
-        test('changes currentPosition', () => {
-            elevator.changeCurrentPosition(2); // When
+    describe('changeCurrentFloor', () => {
+        test('changes currentFloor', () => {
+            elevator.changeCurrentFloor(secondFloor); // When
 
-            expect(elevator.currentPosition).toBe(2); // Then
+            expect(elevator.currentFloor).toBe(secondFloor); // Then
         });
 
         test('throws if difference more than 2', () => {
-            expect(() => elevator.changeCurrentPosition(3))
+            expect(() => elevator.changeCurrentFloor(3))
                 .toThrow('can not change more than 2 floors at once'); // Then
         });
     });

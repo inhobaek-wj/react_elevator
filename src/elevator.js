@@ -1,24 +1,48 @@
 export default class Elevator {
-    constructor(position) {
-        this.currentPosition = position;
+    constructor(floor) {
+        this.currentFloor = floor;
+        this.destinations = [];
     }
 
-    goTo(destination) {
-        this.destination = destination;
+    mustGoTo(floor) {
+        let direction = this.#currentDirection();
+        const wantDirection = floor - this.currentFloor;
+
+        if (this.#isGoingUp(direction, wantDirection)) {
+            this.destinations.push(floor);
+            this.destinations.sort((a, b) => a - b);
+        } else if (this.#isGoingDown(direction, wantDirection)) {
+            this.destinations.push(floor);
+            this.destinations.sort((a, b) => b - a);
+        } else if (this.#isStaying(direction)) {
+            this.destinations.push(floor);
+        }
     }
 
-    isGoingUp() {
-        return this.currentPosition < this.destination;
-    }
-
-    isGoingDown() {
-        return this.currentPosition > this.destination;
-    }
-
-    changeCurrentPosition(position) {
-        if (Math.abs(this.currentPosition - position) > 1) {
+    changeCurrentFloor(floor) {
+        if (Math.abs(this.currentFloor - floor) > 1) {
             throw new Error('can not change more than 2 floors at once');
         }
-        this.currentPosition = position;
+        this.currentFloor = floor;
+    }
+
+    #currentDirection() {
+        let direction = 0;
+        if (this.destinations.length !== 0) {
+            direction = this.destinations[0] - this.currentFloor;
+        }
+        return direction;
+    }
+
+    #isGoingUp(direction, wantDirection) {
+        return direction > 0 && wantDirection > 0;
+    }
+
+    #isGoingDown(direction, wantDirection) {
+        return direction < 0 && wantDirection < 0;
+    }
+
+    #isStaying(direction) {
+        return direction === 0;
     }
 }
