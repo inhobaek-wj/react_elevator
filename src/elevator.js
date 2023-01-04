@@ -39,6 +39,14 @@ export default class Elevator {
         }
     }
 
+    calculateDistance(floor, isGoingUp) {
+        const currentDirection = this.#currentDirection();
+
+        if (currentDirection === 0) {
+            return Math.abs(this.currentFloor - floor);
+        }
+    }
+
     #currentDirection() {
         let direction = 0;
         if (this.destinations.length !== 0) {

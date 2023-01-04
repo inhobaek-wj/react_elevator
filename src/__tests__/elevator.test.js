@@ -1,9 +1,10 @@
 import Elevator from '../elevator';
 
-const secondFloor = 2;
 describe('elevator', () => {
     const firstFloor = 1;
+    const secondFloor = 2;
     const thirdFloor = 3;
+    const fourthFloor = 4;
     const tenthFloor = 10;
 
     let elevator;
@@ -91,6 +92,18 @@ describe('elevator', () => {
 
             expect(elevator.destinations).toHaveLength(1);
             expect(elevator.destinations[0]).toBe(tenthFloor);
+        });
+    });
+
+    describe('calculateDistance', () => {
+        test('엘베는 1층에 멈춰있고, 유저가 4층에서 업 버튼을 눌렀을 때', () => {
+            expect(elevator.calculateDistance(fourthFloor, true)).toBe(3);
+        });
+
+        test('엘베는 4층에 멈춰있고, 유저가 1층에서 다운 버튼을 눌렀을 때', () => {
+            elevator = new Elevator(fourthFloor);
+
+            expect(elevator.calculateDistance(firstFloor, false)).toBe(3);
         });
     });
 });
