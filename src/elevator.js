@@ -1,6 +1,7 @@
 export default class Elevator {
     constructor(floor) {
         this.currentFloor = floor;
+        this.volatileDestination = 0;
         this.destinations = [];
     }
 
@@ -19,11 +20,23 @@ export default class Elevator {
         }
     }
 
-    changeCurrentFloor(floor) {
+    mayGoTo(floor) {
+        this.volatileDestination = floor;
+    }
+
+    clearVolatileDestination() {
+        this.volatileDestination = 0;
+    }
+
+    moveTo(floor) {
         if (Math.abs(this.currentFloor - floor) > 1) {
             throw new Error('can not change more than 2 floors at once');
         }
         this.currentFloor = floor;
+
+        if (this.destinations.length !== 0 && this.destinations[0] === this.currentFloor) {
+            this.destinations.shift();
+        }
     }
 
     #currentDirection() {
