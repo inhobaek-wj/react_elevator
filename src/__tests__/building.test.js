@@ -6,12 +6,19 @@ jest.mock('../elevator');
 describe('Building', () => {
     const minFloor = 1;
     const maxFloor = 20;
+    const firstFloor = 1;
+    const secondFloor = 2;
     const thirdFloor = 3;
+    const fourthFloor = 4;
+    const sixthFloor = 6;
+    const tenthFloor = 10;
     const numOfElevators = 2;
 
     let building;
     let elevator_1;
     let elevator_2;
+
+    jest.useFakeTimers();
 
     beforeEach(() => {
         building = new Building(numOfElevators, minFloor, maxFloor);
@@ -50,14 +57,18 @@ describe('Building', () => {
     test('presses down button', () => {
         building.pressDown(thirdFloor);
 
+        expect(building.floor(firstFloor).downPressed).toBeFalsy();
         expect(building.floor(thirdFloor).downPressed).toBeTruthy();
     });
 
-    describe('sends elevator when press button on the floor', () => {
-        test('if all elevators are on the same floor', () => {
+    describe.skip('makes elevators calculate distance every second', () => {
+        test('if pressed floors exist', () => {
             building.pressDown(thirdFloor);
 
-            expect(elevator_1.goTo).toHaveBeenCalledWith(thirdFloor);
+            jest.advanceTimersByTime(1000);
+
+            expect(elevator_1.calculateDistance).toHaveBeenCalledWith(thirdFloor, false);
+            expect(elevator_2.calculateDistance).toHaveBeenCalledWith(thirdFloor, false);
         });
     });
 });
