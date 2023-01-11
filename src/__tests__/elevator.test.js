@@ -5,6 +5,7 @@ describe('elevator', () => {
     const secondFloor = 2;
     const thirdFloor = 3;
     const fourthFloor = 4;
+    const sixthFloor = 6;
     const tenthFloor = 10;
 
     let elevator;
@@ -116,6 +117,94 @@ describe('elevator', () => {
             elevator = new Elevator(fourthFloor);
 
             expect(elevator.calculateDistance(firstFloor, false)).toBe(3);
+        });
+
+        test('엘베는 1층에서 3층으로 움직이고, 유저가 10층에서 업 버튼을 눌렀을 때', () => {
+            elevator = new Elevator(firstFloor);
+            elevator.mustGoTo(thirdFloor);
+            elevator.move();
+
+            expect(elevator.calculateDistance(tenthFloor, true)).toBe(9);
+        });
+
+        test('엘베는 1층에서 3층으로 움직이고, 유저가 10층에서 다운 버튼을 눌렀을 때', () => {
+            elevator = new Elevator(firstFloor);
+            elevator.mustGoTo(thirdFloor);
+            elevator.move();
+
+            expect(elevator.calculateDistance(tenthFloor, false)).toBe(9);
+        });
+
+        test('엘베는 1층에서 10층으로 움직이고, 유저가 3층에서 업 버튼을 눌렀을 때', () => {
+            elevator = new Elevator(firstFloor);
+            elevator.mustGoTo(tenthFloor);
+            elevator.move();
+
+            expect(elevator.calculateDistance(thirdFloor, true)).toBe(1);
+        });
+
+        test('엘베는 1층에서 10층으로 움직이고, 유저가 3층에서 다운 버튼을 눌렀을 때', () => {
+            elevator = new Elevator(firstFloor);
+            elevator.mustGoTo(tenthFloor);
+            elevator.move();
+
+            expect(elevator.calculateDistance(thirdFloor, false)).toBe(16);
+        });
+
+        test('엘베는 10층에서 3층으로 움직이고, 유저가 4층에서 업 버튼을 눌렀을 때', () => {
+            elevator = new Elevator(tenthFloor);
+            elevator.mustGoTo(thirdFloor);
+            elevator.move();
+            elevator.move();
+
+            expect(elevator.calculateDistance(fourthFloor, true)).toBe(7);
+        });
+
+        test('엘베는 10층에서 3층으로 움직이고, 유저가 4층에서 다운 버튼을 눌렀을 때', () => {
+            elevator = new Elevator(tenthFloor);
+            elevator.mustGoTo(thirdFloor);
+            elevator.move();
+            elevator.move();
+
+            expect(elevator.calculateDistance(fourthFloor, false)).toBe(4);
+        });
+
+        test('엘베는 10층에서 3층으로 움직이고, 유저가 1층에서 업 버튼을 눌렀을 때', () => {
+            elevator = new Elevator(tenthFloor);
+            elevator.mustGoTo(thirdFloor);
+            elevator.move();
+            elevator.move();
+
+            expect(elevator.calculateDistance(firstFloor, true)).toBe(8);
+        });
+
+        test('엘베는 10층에서 3층으로 움직이고, 유저가 1층에서 다운 버튼을 눌렀을 때', () => {
+            elevator = new Elevator(tenthFloor);
+            elevator.mustGoTo(thirdFloor);
+            elevator.move();
+            elevator.move();
+
+            expect(elevator.calculateDistance(firstFloor, false)).toBe(8);
+        });
+
+        test('엘베는 10층에서 3층으로 움직이고, 유저가 4층에서 업 버튼을 눌렀을 때, 중간층이 있으면', () => {
+            elevator = new Elevator(tenthFloor);
+            elevator.mustGoTo(thirdFloor);
+            elevator.mustGoTo(sixthFloor);
+            elevator.move();
+            elevator.move();
+
+            expect(elevator.calculateDistance(fourthFloor, true)).toBe(8);
+        });
+
+        test('엘베는 10층에서 3층으로 움직이고, 유저가 4층에서 다운 버튼을 눌렀을 때, 중간층이 있으면', () => {
+            elevator = new Elevator(tenthFloor);
+            elevator.mustGoTo(thirdFloor);
+            elevator.mustGoTo(sixthFloor);
+            elevator.move();
+            elevator.move();
+
+            expect(elevator.calculateDistance(fourthFloor, false)).toBe(5);
         });
     });
 });

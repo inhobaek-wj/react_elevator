@@ -45,12 +45,34 @@ export default class Elevator {
         }
     }
 
-    calculateDistance(floor, isGoingUp) {
+    calculateDistance(floor, wantToGoUp) {
         const currentDirection = this.#currentDirection();
+        const lastDestination = this.destinations[this.destinations.length - 1];
 
         if (currentDirection === 0) {
             return Math.abs(this.currentFloor - floor);
+        } else if (this.#isGoingUp(currentDirection)) {
+            if (wantToGoUp) {
+                const stopDestinationsBeforeArrive = this.destinations.filter(des => des < floor);
+                return Math.abs(this.currentFloor - floor) + stopDestinationsBeforeArrive.length;
+            } else {
+                return this.#calculateOppositeDistance(lastDestination, floor);
+            }
+
+        } else if (this.#isGoingDown(currentDirection)) {
+            if (wantToGoUp) {
+                return this.#calculateOppositeDistance(lastDestination, floor);
+            } else {
+                const stopDestinationsBeforeArrive = this.destinations.filter(des => des > floor);
+                return Math.abs(this.currentFloor - floor) + stopDestinationsBeforeArrive.length;
+            }
         }
+    }
+
+    #calculateOppositeDistance(lastDestination, floor) {
+        return Math.abs(this.currentFloor - lastDestination)
+            + this.destinations.length
+            + Math.abs(lastDestination - floor);
     }
 
     #currentDirection() {
