@@ -71,24 +71,36 @@ describe('elevator', () => {
         expect(elevator.volatileDestination).toBe(0);
     });
 
-    describe('moveTo', () => {
-        test('changes currentFloor', () => {
-            elevator.moveTo(secondFloor); // When
+    describe('move', () => {
+        test('NOT move if destination NOT exist', () => {
+            elevator.move();
 
-            expect(elevator.currentFloor).toBe(secondFloor); // Then
+            expect(elevator.currentFloor).toBe(firstFloor);
         });
 
-        test('throws if difference more than 2', () => {
-            expect(() => elevator.moveTo(thirdFloor))
-                .toThrow('can not change more than 2 floors at once'); // Then
+        test('goes upward one floor at once', () => {
+            elevator.mustGoTo(thirdFloor);
+
+            elevator.move();
+
+            expect(elevator.currentFloor).toBe(secondFloor);
+        });
+
+        test('goes downward one floor at once', () => {
+            elevator = new Elevator(thirdFloor);
+            elevator.mustGoTo(firstFloor);
+
+            elevator.move();
+
+            expect(elevator.currentFloor).toBe(secondFloor);
         });
 
         test('arrives destination', () => {
             elevator.mustGoTo(thirdFloor);
             elevator.mustGoTo(tenthFloor);
 
-            elevator.moveTo(secondFloor);
-            elevator.moveTo(thirdFloor);
+            elevator.move();
+            elevator.move();
 
             expect(elevator.destinations).toHaveLength(1);
             expect(elevator.destinations[0]).toBe(tenthFloor);
