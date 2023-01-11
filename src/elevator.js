@@ -29,7 +29,8 @@ export default class Elevator {
     }
 
     move() {
-        if (this.destinations.length === 0) {
+        if (this.destinations.length === 0
+            && this.volatileDestination === 0) {
             return;
         }
 
@@ -79,6 +80,8 @@ export default class Elevator {
         let direction = 0;
         if (this.destinations.length !== 0) {
             direction = this.destinations[0] - this.currentFloor;
+        } else if (this.volatileDestination !== 0) {
+            direction = this.volatileDestination - this.currentFloor;
         }
         return direction;
     }

@@ -106,6 +106,23 @@ describe('elevator', () => {
             expect(elevator.destinations).toHaveLength(1);
             expect(elevator.destinations[0]).toBe(tenthFloor);
         });
+
+        test('goes to upward volatileDestination', () => {
+            elevator.mayGoTo(thirdFloor);
+
+            elevator.move();
+
+            expect(elevator.currentFloor).toBe(secondFloor);
+        });
+
+        test('goes to downward volatileDestination', () => {
+            elevator = new Elevator(fourthFloor);
+            elevator.mayGoTo(firstFloor);
+
+            elevator.move();
+
+            expect(elevator.currentFloor).toBe(thirdFloor);
+        });
     });
 
     describe('calculateDistance', () => {
