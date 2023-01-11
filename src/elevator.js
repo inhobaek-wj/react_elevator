@@ -43,6 +43,9 @@ export default class Elevator {
 
         if (this.destinations.length !== 0 && this.destinations[0] === this.currentFloor) {
             this.destinations.shift();
+            this.#openDoor();
+        } else if (this.volatileDestination === this.currentFloor) {
+            this.#openDoor();
         }
     }
 
@@ -104,5 +107,9 @@ export default class Elevator {
 
     #isGoingDown(direction) {
         return direction < 0;
+    }
+
+    #openDoor() {
+        console.log('open door!!!');
     }
 }

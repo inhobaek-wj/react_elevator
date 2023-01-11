@@ -96,7 +96,7 @@ describe('elevator', () => {
             expect(elevator.currentFloor).toBe(secondFloor);
         });
 
-        test('arrives destination', () => {
+        test('removes next destination', () => {
             elevator.mustGoTo(thirdFloor);
             elevator.mustGoTo(tenthFloor);
 
@@ -105,6 +105,29 @@ describe('elevator', () => {
 
             expect(elevator.destinations).toHaveLength(1);
             expect(elevator.destinations[0]).toBe(tenthFloor);
+        });
+
+        test('opens door when arrive destination', () => {
+            jest.spyOn(global.console, 'log');
+
+            elevator.mustGoTo(thirdFloor);
+            elevator.mustGoTo(tenthFloor);
+
+            elevator.move();
+            elevator.move();
+
+            expect(global.console.log).toHaveBeenCalledWith('open door!!!');
+        });
+
+        test('opens door when arrive volatileDestination', () => {
+            jest.spyOn(global.console, 'log');
+
+            elevator.mayGoTo(thirdFloor);
+
+            elevator.move();
+            elevator.move();
+
+            expect(global.console.log).toHaveBeenCalledWith('open door!!!');
         });
 
         test('goes to upward volatileDestination', () => {
