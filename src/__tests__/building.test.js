@@ -7,10 +7,8 @@ describe('Building', () => {
     const minFloor = 1;
     const maxFloor = 20;
     const firstFloor = 1;
-    const secondFloor = 2;
     const thirdFloor = 3;
     const fourthFloor = 4;
-    const sixthFloor = 6;
     const tenthFloor = 10;
     const numOfElevators = 2;
 
