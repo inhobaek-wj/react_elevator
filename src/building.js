@@ -2,22 +2,25 @@ import Elevator from "./elevator";
 
 export class Building {
     constructor(numOfElevators, minFloor, maxFloor) {
-        this.elevators = new Array(numOfElevators)
-            .fill(new Elevator(1));
+        this.elevators = [];
+        for (let i = 0; i < numOfElevators; i++) {
+            this.elevators.push(new Elevator(1));
+        }
 
         this.minFloor = minFloor;
         this.maxFloor = maxFloor;
 
-        const tmp =
-            new Array(maxFloor - minFloor + 1)
-                .fill({
-                        upPressed: false,
-                        downPressed: false,
-                    }
-                );
-        this.floorsArr = JSON.parse(JSON.stringify(tmp));
+        this.floorsArr = [];
+        let numOfTotalFloors = maxFloor - minFloor + 1;
+        for (let i = 0; i < numOfTotalFloors; i++) {
+            this.floorsArr.push({
+                number: i + 1,
+                upPressed: false,
+                downPressed: false,
+            });
+        }
 
-        // this.#thread();
+        this.#runThread();
     }
 
     floor(floor) {
@@ -32,23 +35,44 @@ export class Building {
         this.floorsArr[floor - 1].downPressed = true;
     }
 
-    #thread() {
-        setInterval(() => cal(this.floorsArr, this.elevators), 1000);
+    killThread() {
+        clearInterval(this.thread);
+    }
+
+    #runThread() {
+        this.thread = setInterval(() => this.#sendClosestElevator(this.floorsArr, this.elevators), 1000);
+    }
+
+    #sendClosestElevator(floorsArr, elevators) {
+        elevators.forEach(elevator => {
+            elevator.move();
+            elevator.clearVolatileDestination();
+        });
+
+        floorsArr.forEach((floor, idx) => {
+            let closetDistance = Number.MAX_VALUE;
+            let closestElevator;
+
+            for (let i = 0; i < elevators.length; i++) {
+                const elevator = elevators[i];
+                let distance = -1;
+
+                if (floor.upPressed) {
+                    distance = elevator.calculateDistance(idx + 1, true);
+                } else if (floor.downPressed) {
+                    distance = elevator.calculateDistance(idx + 1, false);
+                }
+
+                const isDistanceChanged = distance !== -1;
+                if (isDistanceChanged && closetDistance > distance) {
+                    closetDistance = distance;
+                    closestElevator = elevator;
+                }
+            }
+
+            if (closestElevator) {
+                closestElevator.mayGoTo(floor.number);
+            }
+        });
     }
 }
-
-function cal(floorsArr, elevators) {
-    floorsArr.forEach((floor, idx) => {
-        console.log(idx + 1, floor);
-        for (let i = 0; i < elevators; i++) {
-            const elevator = elevators[i];
-
-            if (floor.upPressed) {
-                elevator.calculateDistance(idx + 1, true);
-            } else if (floor.downPressed) {
-                elevator.calculateDistance(idx + 1, false);
-            }
-        }
-    });
-}
-
