@@ -2,9 +2,28 @@ import './App.css';
 
 function BuildingComponent() {
     const buttons = [];
-    let numOfTotalFloors = 20;
+    const numOfTotalFloors = 20;
+    const numOfElevator = 3;
     for (let i = 0; i < numOfTotalFloors; i++) {
         buttons.push(i + 1);
+    }
+
+    const elevators = () => {
+        const temp = [];
+        for (let i = 0; i < numOfElevator; i++) {
+            temp.push(
+                <div key={i}
+                     className="w-80 h-full border-solid border-2 border-red-500"
+                     data-testid="elevator">
+                    <p>elevator</p>
+                    <p>1</p>
+                    <div>
+                        <span>1</span>
+                        <span>2</span>
+                    </div>
+                </div>);
+        }
+        return temp;
     }
 
     return (
@@ -20,15 +39,7 @@ function BuildingComponent() {
                     </div>;
                 })}
             </div>
-
-            <div className="w-80 h-4/6 border-solid border-2 border-red-500">
-                <p>elevator</p>
-                <p>1</p>
-                <div>
-                    <span>1</span>
-                    <span>2</span>
-                </div>
-            </div>
+            <div className="h-4/6 flex justify-around">{elevators()}</div>
         </div>
     );
 }

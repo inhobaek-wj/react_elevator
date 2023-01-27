@@ -40,4 +40,12 @@ describe('BuildingComponent', () => {
             expect(downBtn).not.toBeNull();
         });
     });
+
+    it('has 3 Elevators', () => {
+        render(<BuildingComponent/>);
+
+        const elevators = screen.getAllByTestId("elevator");
+
+        expect(elevators).toHaveLength(3);
+    });
 });
