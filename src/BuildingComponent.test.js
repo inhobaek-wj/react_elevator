@@ -1,5 +1,14 @@
 import {render, screen, within} from '@testing-library/react';
 import BuildingComponent from './BuildingComponent';
+import Elevator from "./elevator";
+
+const mockElevatorComponent = jest.fn();
+jest.mock("./ElevatorComponent", () =>
+    (props) => {
+        mockElevatorComponent(props);
+        return <div data-testid="elevator"/>;
+    }
+);
 
 describe('BuildingComponent', () => {
     describe('has buttons and', () => {
@@ -47,5 +56,23 @@ describe('BuildingComponent', () => {
         const elevators = screen.getAllByTestId("elevator");
 
         expect(elevators).toHaveLength(3);
+        expect(mockElevatorComponent).toHaveBeenNthCalledWith(
+            1,
+            {
+                elevator: expect.any(Elevator)
+            }
+        );
+        expect(mockElevatorComponent).toHaveBeenNthCalledWith(
+            2,
+            {
+                elevator: expect.any(Elevator)
+            }
+        );
+        expect(mockElevatorComponent).toHaveBeenNthCalledWith(
+            3,
+            {
+                elevator: expect.any(Elevator)
+            }
+        );
     });
 });
