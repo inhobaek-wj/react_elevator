@@ -5,8 +5,8 @@ import Elevator from "./elevator";
 const mockElevatorComponent = jest.fn();
 jest.mock("./ElevatorComponent", () =>
     (props) => {
-        mockElevatorComponent(props);
-        return <div data-testid="elevator"/>;
+        mockElevatorComponent(props); // verify 시 필요
+        return <div data-testid="elevator"/>;  // rendering 확인 시 필요
     }
 );
 
@@ -54,8 +54,8 @@ describe('BuildingComponent', () => {
         render(<BuildingComponent/>);
 
         const elevators = screen.getAllByTestId("elevator");
-
         expect(elevators).toHaveLength(3);
+
         expect(mockElevatorComponent).toHaveBeenNthCalledWith(
             1,
             {
