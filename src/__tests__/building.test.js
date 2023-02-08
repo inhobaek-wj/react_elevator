@@ -1,4 +1,4 @@
-import {Building} from '../building';
+import Building from '../building';
 import Elevator from '../elevator';
 
 jest.mock('../elevator');
