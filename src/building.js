@@ -1,6 +1,7 @@
 import Elevator from "./elevator";
 
-export class Building {
+export default class Building {
+
     constructor(numOfElevators, minFloor, maxFloor) {
         this.elevators = [];
         for (let i = 0; i < numOfElevators; i++) {

@@ -1,5 +1,5 @@
 import './App.css';
-import {Building} from "./building";
+import Building from "./building";
 import ElevatorComponent from "./ElevatorComponent";
 
 function BuildingComponent() {
