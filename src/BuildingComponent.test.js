@@ -1,12 +1,10 @@
 import {render, screen, within} from '@testing-library/react';
 import BuildingComponent from './BuildingComponent';
-import Building from "./building";
 
 const mockElevatorComponent = jest.fn();
 const elevator_1 = 'elevator 1';
 const elevator_2 = 'elevator 2';
 const elevator_3 = 'elevator 3';
-const mockElevators = jest.fn().mockReturnValue([elevator_1, elevator_2, elevator_3]);
 
 jest.mock("./ElevatorComponent", () =>
     (props) => {
@@ -16,14 +14,12 @@ jest.mock("./ElevatorComponent", () =>
 );
 
 jest.mock("./building", () => {
-    return jest.fn().mockReturnValue(() => {
+    return function () {
         return {
             elevators: [elevator_1, elevator_2, elevator_3]
         };
-    });
+    }
 });
-
-console.log(Building.prototype);
 
 describe('BuildingComponent', () => {
     describe('has buttons and', () => {
