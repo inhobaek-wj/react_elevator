@@ -1,14 +1,29 @@
 import {render, screen, within} from '@testing-library/react';
 import BuildingComponent from './BuildingComponent';
-import Elevator from "./elevator";
+import Building from "./building";
 
 const mockElevatorComponent = jest.fn();
+const elevator_1 = 'elevator 1';
+const elevator_2 = 'elevator 2';
+const elevator_3 = 'elevator 3';
+const mockElevators = jest.fn().mockReturnValue([elevator_1, elevator_2, elevator_3]);
+
 jest.mock("./ElevatorComponent", () =>
     (props) => {
         mockElevatorComponent(props); // verify 시 필요
         return <div data-testid="elevator"/>;  // rendering 확인 시 필요
     }
 );
+
+jest.mock("./building", () => {
+    return jest.fn().mockReturnValue(() => {
+        return {
+            elevators: [elevator_1, elevator_2, elevator_3]
+        };
+    });
+});
+
+console.log(Building.prototype);
 
 describe('BuildingComponent', () => {
     describe('has buttons and', () => {
@@ -59,19 +74,19 @@ describe('BuildingComponent', () => {
         expect(mockElevatorComponent).toHaveBeenNthCalledWith(
             1,
             {
-                elevator: expect.any(Elevator)
+                elevator: elevator_1
             }
         );
         expect(mockElevatorComponent).toHaveBeenNthCalledWith(
             2,
             {
-                elevator: expect.any(Elevator)
+                elevator: elevator_2
             }
         );
         expect(mockElevatorComponent).toHaveBeenNthCalledWith(
             3,
             {
-                elevator: expect.any(Elevator)
+                elevator: elevator_3
             }
         );
     });
