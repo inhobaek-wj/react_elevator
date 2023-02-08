@@ -4,7 +4,8 @@ import ElevatorComponent from "./ElevatorComponent";
 
 function BuildingComponent() {
     const buttons = [];
-    const mayGoToQueue = [1, 2];
+    const mayGoUpQueue = [1, 2];
+    const mayGoDownQueue = [1, 2];
     const numOfTotalFloors = 20;
     const numOfElevator = 3;
     for (let i = 0; i < numOfTotalFloors; i++) {
@@ -29,7 +30,8 @@ function BuildingComponent() {
                 </div>
 
                 <div className="ml-8">
-                    <p>mayGoTo: <strong>{mayGoToQueue.join(',')}</strong></p>
+                    <p>mayGoUp: <strong>{mayGoUpQueue.join(',')}</strong></p>
+                    <p>mayGoDown: <strong>{mayGoDownQueue.join(',')}</strong></p>
                 </div>
             </div>
 
