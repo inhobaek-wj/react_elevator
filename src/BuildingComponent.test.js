@@ -1,5 +1,6 @@
 import {render, screen, within} from '@testing-library/react';
 import BuildingComponent from './BuildingComponent';
+import {click} from "@testing-library/user-event/dist/click";
 
 const mockElevatorComponent = jest.fn();
 const elevator_1 = 'elevator 1';
@@ -85,5 +86,15 @@ describe('BuildingComponent', () => {
                 elevator: elevator_3
             }
         );
+    });
+
+    it('pushes up button on first floor', async () => {
+        render(<BuildingComponent/>);
+
+        const upButtonOnFirstFloor = screen.getByTestId("1-u-btn");
+
+        await click(upButtonOnFirstFloor);
+
+        expect(screen.getByText('mayGoUp: 1')).not.toBeNull();
     });
 });
