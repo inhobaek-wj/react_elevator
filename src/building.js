@@ -33,7 +33,7 @@ export default class Building {
     }
 
     pressDown(floor) {
-        this.floorsArr[floor - 1].downPressed = true;
+        this.floor(floor).downPressed = true;
     }
 
     killThread() {
