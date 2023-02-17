@@ -17,7 +17,9 @@ jest.mock("./ElevatorComponent", () =>
 jest.mock("./building", () => {
     return function () {
         return {
-            elevators: [elevator_1, elevator_2, elevator_3]
+            elevators: [elevator_1, elevator_2, elevator_3],
+            downPressedFloor: () => [2, 8],
+            upPressedFloor: () => [1, 3]
         };
     }
 });
@@ -88,13 +90,40 @@ describe('BuildingComponent', () => {
         );
     });
 
-    it('pushes up button on first floor', async () => {
-        render(<BuildingComponent/>);
+    describe('shows pressed floors', () => {
+        it('down', async () => {
+            render(<BuildingComponent/>);
 
-        const upButtonOnFirstFloor = screen.getByTestId("1-u-btn");
+            expect(screen.getByText('mayGoDown: 2,8')).not.toBeNull();
+        });
 
-        await click(upButtonOnFirstFloor);
+        it('up', async () => {
+            render(<BuildingComponent/>);
 
-        expect(screen.getByText('mayGoUp: 1')).not.toBeNull();
+            // expect(screen.getByText('mayGoUp: 1,3')).toBeInTheDocument();
+            expect(screen.getByTestId('may-go-up').text).toBe('mayGoUp: 1,3');
+        });
+    });
+
+    describe('presses button', () => {
+        it('to go up on first floor', async () => {
+            render(<BuildingComponent/>);
+
+            const upButtonOnFirstFloor = screen.getByTestId("1-u-btn");
+
+            await click(upButtonOnFirstFloor);
+
+            expect(screen.getByText('mayGoUp: 1')).not.toBeNull();
+        });
+
+        it('to go down on tenth floor', async () => {
+            render(<BuildingComponent/>);
+
+            const upButtonOnFirstFloor = screen.getByTestId("1-u-btn");
+
+            await click(upButtonOnFirstFloor);
+
+            expect(screen.getByText('mayGoUp: 1')).not.toBeNull();
+        });
     });
 });
