@@ -107,27 +107,45 @@ describe('elevator', () => {
             expect(elevator.destinations[0]).toBe(tenthFloor);
         });
 
-        test('opens door when arrive destination', () => {
-            jest.spyOn(global.console, 'log');
-
+        test('opens door when arrive destination upward', () => {
             elevator.mustGoTo(thirdFloor);
             elevator.mustGoTo(tenthFloor);
 
             elevator.move();
-            elevator.move();
+            const openedFloor = elevator.move();
 
-            expect(global.console.log).toHaveBeenCalledWith('open door!!!');
+            expect(openedFloor).toStrictEqual({
+                isUpward: true,
+                isDownward: false,
+                floor: thirdFloor,
+            });
+        });
+
+        test('opens door when arrive destination downward', () => {
+            elevator = new Elevator(thirdFloor);
+            elevator.mustGoTo(firstFloor);
+
+            elevator.move();
+            const openedFloor = elevator.move();
+
+            expect(openedFloor).toStrictEqual({
+                isUpward: false,
+                isDownward: true,
+                floor: firstFloor,
+            });
         });
 
         test('opens door when arrive volatileDestination', () => {
-            jest.spyOn(global.console, 'log');
-
             elevator.mayGoTo(thirdFloor);
 
             elevator.move();
-            elevator.move();
+            const openedFloor = elevator.move();
 
-            expect(global.console.log).toHaveBeenCalledWith('open door!!!');
+            expect(openedFloor).toStrictEqual({
+                isUpward: true,
+                isDownward: false,
+                floor: thirdFloor,
+            });
         });
 
         test('goes to upward volatileDestination', () => {

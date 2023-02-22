@@ -43,10 +43,19 @@ export default class Elevator {
 
         if (this.destinations.length !== 0 && this.destinations[0] === this.currentFloor) {
             this.destinations.shift();
-            this.#openDoor();
+            return {
+                isUpward: this.#isGoingUp(direction),
+                isDownward: this.#isGoingDown(direction),
+                floor: this.currentFloor,
+            }
         } else if (this.volatileDestination === this.currentFloor) {
-            this.#openDoor();
+            return {
+                isUpward: this.#isGoingUp(direction),
+                isDownward: this.#isGoingDown(direction),
+                floor: this.currentFloor,
+            }
         }
+        return null;
     }
 
     calculateDistance(floor, wantToGoUp) {
