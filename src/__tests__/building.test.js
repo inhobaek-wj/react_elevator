@@ -161,4 +161,16 @@ describe('Building', () => {
             expect(elevator_2.move).toHaveBeenNthCalledWith(1);
         });
     });
+
+    test('upPressedFloor', () => {
+        building.pressUp(thirdFloor);
+
+        expect(building.upPressedFloor()).toStrictEqual([thirdFloor]);
+    });
+
+    test('downPressedFloor', () => {
+        building.pressDown(thirdFloor);
+
+        expect(building.downPressedFloor()).toStrictEqual([thirdFloor]);
+    });
 });

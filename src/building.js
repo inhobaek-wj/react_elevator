@@ -40,6 +40,18 @@ export default class Building {
         clearInterval(this.thread);
     }
 
+    upPressedFloor() {
+        return this.floorsArr
+            .filter(fl => fl.upPressed)
+            .map(fl => fl.number);
+    }
+
+    downPressedFloor() {
+        return this.floorsArr
+            .filter(fl => fl.downPressed)
+            .map(fl => fl.number);
+    }
+
     #runThread() {
         this.thread = setInterval(() => this.#sendClosestElevator(this.floorsArr, this.elevators), 1000);
     }
