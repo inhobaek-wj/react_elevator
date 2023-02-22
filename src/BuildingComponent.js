@@ -1,6 +1,7 @@
 import './App.css';
 import Building from "./building";
 import ElevatorComponent from "./ElevatorComponent";
+import {useState} from "react";
 
 function BuildingComponent() {
     const buttons = [];
@@ -11,8 +12,9 @@ function BuildingComponent() {
     }
 
     const building = new Building(numOfElevator, 1, numOfTotalFloors);
-    const mayGoUpQueue = building.upPressedFloor();
-    const mayGoDownQueue = building.downPressedFloor();
+
+    const [mayGoUpQueue, setMayGoUpQueue] = useState(building.upPressedFloor());
+    const [mayGoDownQueue, setMayGoDownQueue] = useState(building.downPressedFloor());
 
     return (
         <div className="pt-20 h-screen border-solid border-2 border-sky-500 flex flex-col justify-center">
@@ -23,8 +25,20 @@ function BuildingComponent() {
                                     className="ml-8 inline-block"
                                     data-testid="building-btn">
                             {floor}
-                            {floor !== 20 && <span>u</span>}
-                            {floor !== 1 && <span>d</span>}
+                            {floor !== 20 && <span
+                                data-testid={`${floor}-u-btn`}
+                                onClick={() => {
+                                    building.pressUp(floor);
+                                    setMayGoUpQueue(building.upPressedFloor());
+                                }}
+                            >u</span>}
+                            {floor !== 1 && <span
+                                data-testid={`${floor}-d-btn`}
+                                onClick={() => {
+                                    building.pressDown(floor);
+                                    setMayGoDownQueue(building.downPressedFloor());
+                                }}
+                            >d</span>}
                         </div>;
                     })}
                 </div>

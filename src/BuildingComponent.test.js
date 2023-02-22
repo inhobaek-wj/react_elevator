@@ -6,6 +6,17 @@ const mockElevatorComponent = jest.fn();
 const elevator_1 = 'elevator 1';
 const elevator_2 = 'elevator 2';
 const elevator_3 = 'elevator 3';
+const hasContent = (contents) => {
+    return screen.getByText((_, node) => {
+        const hasText = element => element.textContent === contents;
+        const nodeHasText = hasText(node);
+
+        return nodeHasText;
+    });
+}
+
+let upPressedFloor = 0;
+let downPressedFloor = 0;
 
 jest.mock("./ElevatorComponent", () =>
     (props) => {
@@ -19,21 +30,19 @@ jest.mock("./building", () => {
         return {
             elevators: [elevator_1, elevator_2, elevator_3],
             downPressedFloor: () => [2, 8],
-            upPressedFloor: () => [1, 3]
+            upPressedFloor: () => [1, 3],
+            pressUp: (floor) => upPressedFloor = floor,
+            pressDown: (floor) => downPressedFloor = floor,
         };
     }
 });
 
-function hasContent(contents) {
-    return screen.getByText((_, node) => {
-        const hasText = element => element.textContent === contents;
-        const nodeHasText = hasText(node);
-
-        return nodeHasText;
-    });
-}
-
 describe('BuildingComponent', () => {
+    beforeEach(() => {
+        upPressedFloor = 0;
+        downPressedFloor = 0;
+    })
+
     describe('has buttons and', () => {
         it('total is 20', () => {
             render(<BuildingComponent/>);
@@ -118,20 +127,18 @@ describe('BuildingComponent', () => {
             render(<BuildingComponent/>);
 
             const upButtonOnFirstFloor = screen.getByTestId("1-u-btn");
-
             await click(upButtonOnFirstFloor);
 
-            expect(screen.getByText('mayGoUp: 1')).not.toBeNull();
+            expect(upPressedFloor).toBe(1);
         });
 
         it('to go down on tenth floor', async () => {
             render(<BuildingComponent/>);
 
-            const upButtonOnFirstFloor = screen.getByTestId("1-u-btn");
+            const downButtonOnSeventhFloor = screen.getByTestId("7-d-btn");
+            await click(downButtonOnSeventhFloor);
 
-            await click(upButtonOnFirstFloor);
-
-            expect(screen.getByText('mayGoUp: 1')).not.toBeNull();
+            expect(downPressedFloor).toBe(7);
         });
     });
 });
