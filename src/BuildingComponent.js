@@ -1,7 +1,7 @@
 import './App.css';
 import Building from "./building";
 import ElevatorComponent from "./ElevatorComponent";
-import {useState} from "react";
+import {useMemo, useState} from "react";
 
 function BuildingComponent() {
     const buttons = [];
@@ -11,7 +11,10 @@ function BuildingComponent() {
         buttons.push(i + 1);
     }
 
-    const building = new Building(numOfElevator, 1, numOfTotalFloors);
+    const building = useMemo(
+        () => new Building(numOfElevator, 1, numOfTotalFloors),
+        [numOfElevator, numOfTotalFloors],
+    );
 
     const [mayGoUpQueue, setMayGoUpQueue] = useState(building.upPressedFloor());
     const [mayGoDownQueue, setMayGoDownQueue] = useState(building.downPressedFloor());
