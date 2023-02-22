@@ -24,6 +24,15 @@ jest.mock("./building", () => {
     }
 });
 
+function hasContent(contents) {
+    return screen.getByText((_, node) => {
+        const hasText = element => element.textContent === contents;
+        const nodeHasText = hasText(node);
+
+        return nodeHasText;
+    });
+}
+
 describe('BuildingComponent', () => {
     describe('has buttons and', () => {
         it('total is 20', () => {
@@ -94,14 +103,13 @@ describe('BuildingComponent', () => {
         it('down', async () => {
             render(<BuildingComponent/>);
 
-            expect(screen.getByText('mayGoDown: 2,8')).not.toBeNull();
+            expect(hasContent("mayGoDown: 2,8")).toBeTruthy();
         });
 
         it('up', async () => {
             render(<BuildingComponent/>);
 
-            // expect(screen.getByText('mayGoUp: 1,3')).toBeInTheDocument();
-            expect(screen.getByTestId('may-go-up').text).toBe('mayGoUp: 1,3');
+            expect(hasContent("mayGoUp: 1,3")).toBeTruthy();
         });
     });
 

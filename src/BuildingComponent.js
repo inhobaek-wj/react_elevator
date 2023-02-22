@@ -30,7 +30,7 @@ function BuildingComponent() {
                 </div>
 
                 <div className="ml-8">
-                    <p data-testid="may-go-up">mayGoUp: <strong>{mayGoUpQueue.join(',')}</strong></p>
+                    <p>mayGoUp: <strong>{mayGoUpQueue.join(',')}</strong></p>
                     <p>mayGoDown: <strong>{mayGoDownQueue.join(',')}</strong></p>
                 </div>
             </div>
