@@ -59,10 +59,15 @@ export default class Building {
     #sendClosestElevator(floorsArr, elevators) {
         elevators.forEach(elevator => {
             const openedFloor = elevator.move();
-            if (openedFloor.isUpward) {
-                floorsArr[openedFloor.floor].upPressed = false;
-            } else {
-                floorsArr[openedFloor.floor].downPressed = false;
+
+            if (openedFloor) {
+                let floorIdx = openedFloor.floor - 1;
+
+                if (openedFloor.isUpward) {
+                    floorsArr[floorIdx].upPressed = false;
+                } else if (openedFloor.isDownward) {
+                    floorsArr[floorIdx].downPressed = false;
+                }
             }
 
             elevator.clearVolatileDestination();

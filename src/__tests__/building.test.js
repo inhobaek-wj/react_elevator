@@ -160,6 +160,40 @@ describe('Building', () => {
             expect(elevator_1.move).toHaveBeenNthCalledWith(1);
             expect(elevator_2.move).toHaveBeenNthCalledWith(1);
         });
+
+        test('initializes arrived floor when going up', () => {
+            jest.spyOn(Elevator.prototype, 'move')
+                .mockImplementation(() => {
+                    return {
+                        isUpward: true,
+                        isDownward: false,
+                        floor: thirdFloor,
+                    };
+                });
+
+            building.pressUp(thirdFloor);
+
+            jest.advanceTimersByTime(1000);
+
+            expect(building.floor(thirdFloor).upPressed).toBeFalsy();
+        });
+
+        test('initializes arrived floor when going down', () => {
+            jest.spyOn(Elevator.prototype, 'move')
+                .mockImplementation(() => {
+                    return {
+                        isUpward: false,
+                        isDownward: true,
+                        floor: thirdFloor,
+                    };
+                });
+
+            building.pressDown(thirdFloor);
+
+            jest.advanceTimersByTime(1000);
+
+            expect(building.floor(thirdFloor).downPressed).toBeFalsy();
+        });
     });
 
     test('upPressedFloor', () => {
